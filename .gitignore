@@ -1,0 +1,6 @@
+*.txt
+*.pyc
+*.show
+*.train
+*.model
+*.ini

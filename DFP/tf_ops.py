@@ -14,8 +14,10 @@ def mse_ignore_nans(preds, targets, **kwargs):
 
 def conv2d(input_, output_dim, 
         k_h=3, k_w=3, d_h=2, d_w=2, msra_coeff=1,
-        name="conv2d"):
-    with tf.variable_scope(name):
+        name="conv2d", reuse=False):
+    with tf.variable_scope(name) as scope:
+        if reuse:
+            scope.reuse_variables()
         w = tf.get_variable('w', [k_h, k_w, input_.get_shape()[-1], output_dim],
                             initializer=tf.truncated_normal_initializer(stddev=msra_coeff * msra_stddev(input_, k_h, k_w)))
         b = tf.get_variable('b', [output_dim], initializer=tf.constant_initializer(0.0))
@@ -48,7 +50,30 @@ def conv_encoder(data, params, name, msra_coeff=1):
         layers.append(lrelu(conv2d(curr_inp, param['out_channels'], k_h=param['kernel'], k_w=param['kernel'], d_h=param['stride'], d_w=param['stride'], name=name + str(nl), msra_coeff=msra_coeff)))
         
     return layers[-1]
-        
+
+def rpn_conv_encoder(data, params, name, msra_coeff=1):
+    layers = []
+    for nl, param in enumerate(params):
+        if len(layers) == 0:
+            curr_inp = data
+        else:
+            curr_inp = layers[-1]
+        layers.append(lrelu(conv2d(curr_inp, 16, k_h=3, k_w=3, d_h=2, d_w=2, name=name + str(nl), msra_coeff=msra_coeff)))   
+        #layers.append(lrelu(conv2d(curr_inp, param['out_channels'], k_h=param['kernel'], k_w=param['kernel'], d_h=param['stride'], d_w=param['stride'], name=name + str(nl), msra_coeff=msra_coeff)))
+
+    reuse=False
+    outputs = []
+    for l in layers[1:]:
+        rpn_layer = lrelu(conv2d(l, 8, k_h=3, k_w=3, d_h=2, d_w=2, name=name + '_rpn', msra_coeff=msra_coeff, reuse=reuse))
+        flattened_rpn = flatten(rpn_layer)
+        outputs = []
+        outputs.append(flattened_rpn)
+        reuse=True
+
+    concat_outputs = tf.concat(outputs, 1)
+    return concat_outputs
+
+
 def fc_net(data, params, name, last_linear = False, return_layers = [-1], msra_coeff=1):
     layers = []
     for nl, param in enumerate(params):
