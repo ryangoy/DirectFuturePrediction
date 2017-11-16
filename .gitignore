@@ -4,3 +4,5 @@
 *.train
 *.model
 *.ini
+checkpoints
+logs
