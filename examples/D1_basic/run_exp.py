@@ -114,14 +114,14 @@ def main(main_args):
 	
 	
 	# Create and run the experiment
-	
+	print("Creating experiment:")	
 	experiment = MultiExperiment(target_maker_args=target_maker_args, 
 							simulator_args=simulator_args, 
 							train_experience_args=train_experience_args, 
 							test_policy_experience_args=test_policy_experience_args, 
 							agent_args=agent_args,
 							experiment_args=experiment_args)
-	
+	print("Running experiment:")
 	experiment.run(main_args[0])
 	
 	

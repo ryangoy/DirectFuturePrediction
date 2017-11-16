@@ -115,6 +115,7 @@ def main(main_args):
 	
 	
 	# Create and run the experiment
+	print("Running experiment:")
 	
 	experiment = MultiExperiment(target_maker_args=target_maker_args, 
 							simulator_args=simulator_args, 
