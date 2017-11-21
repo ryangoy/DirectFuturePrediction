@@ -8,6 +8,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 import time
+import time
 import os
 from . import util as my_util
 
@@ -351,8 +352,8 @@ class MultiExperienceMemory:
                 print('Rewards:', self._rewards[curr_index])
                 print('Action:', self._actions[curr_index])
                 print('Terminal:', self._terminals[curr_index])
-                inp = input()
-                
+            inp='c'    
+            time.sleep(0.2)
             curr_index = (curr_index + 1) % self.capacity
             if curr_index == end_index:
                 if write_video:
