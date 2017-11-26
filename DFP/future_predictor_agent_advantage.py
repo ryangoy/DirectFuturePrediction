@@ -9,6 +9,9 @@ from . import tf_ops as my_ops
 import os
 import re
 from .agent import Agent
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 
 class FuturePredictorAgentAdvantage(Agent):
     
@@ -21,6 +24,7 @@ class FuturePredictorAgentAdvantage(Agent):
         self.fc_adv_params = np.copy(self.fc_joint_params)
         self.fc_adv_params['out_dims'][-1] = len(self.net_discrete_actions) * self.target_dim
         p_img_conv = my_ops.conv_encoder(input_images, self.conv_params, 'p_img_conv', msra_coeff=0.9)
+        self.conv_out = p_img_conv
         p_img_fc = my_ops.fc_net(my_ops.flatten(p_img_conv), self.fc_img_params, 'p_img_fc', msra_coeff=0.9)
         p_meas_fc = my_ops.fc_net(input_measurements, self.fc_meas_params, 'p_meas_fc', msra_coeff=0.9)
         if isinstance(self.fc_obj_params, np.ndarray):
@@ -79,10 +83,14 @@ class FuturePredictorAgentAdvantage(Agent):
         else:
             curr_objective_coeffs = objective_coeffs
         
-        predictions = self.sess.run(self.pred_all, feed_dict={self.input_images: state_imgs, 
+        predictions, conv_out = self.sess.run([self.pred_all, self.conv_out], feed_dict={self.input_images: state_imgs, 
                                                               self.input_measurements: state_meas,
                                                               self.input_objective_coeffs: curr_objective_coeffs})
-        
+        #print(conv_out.shape)
+        #if self.iter_id == 1:
+        #    plt.imshow(conv_out[0, :, :, :3])
+        #    plt.show()
+        self.iter_id += 1
         self.curr_predictions = predictions[:,:,self.objective_indices]*curr_objective_coeffs[:,None,:]
         self.curr_objectives = np.sum(self.curr_predictions, axis=2)
         

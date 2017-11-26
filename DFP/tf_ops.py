@@ -44,6 +44,8 @@ def conv_encoder(data, params, name, msra_coeff=1):
             curr_inp = data
         else:
             curr_inp = layers[-1]
+        if nl == len(params)-1:
+            params['out_channels'] = 3
             
         layers.append(lrelu(conv2d(curr_inp, param['out_channels'], k_h=param['kernel'], k_w=param['kernel'], d_h=param['stride'], d_w=param['stride'], name=name + str(nl), msra_coeff=msra_coeff)))
         

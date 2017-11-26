@@ -5,8 +5,8 @@ from __future__ import print_function
 import sys
 import os
 
-vizdoom_path = '../../../../toolboxes/ViZDoom_2017_03_31'
-sys.path = [os.path.join(vizdoom_path,'bin/python3')] + sys.path
+vizdoom_path = '../../../ViZDoom'
+sys.path = [os.path.join(vizdoom_path,'bin/python2.7')] + sys.path
 
 import vizdoom 
 print(vizdoom.__file__)

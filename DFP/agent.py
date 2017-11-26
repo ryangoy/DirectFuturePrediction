@@ -83,6 +83,7 @@ class Agent:
         self.test_policy_every = args['test_policy_every']          
         self.num_steps_per_policy_test = args['num_steps_per_policy_test']
         self.save_param_histograms_every = args['save_param_histograms_every']          
+        self.iter_id = 0
         
         if self.reset_iter_count or (not self.set_init_step(self.init_model)):
             self.curr_step = 0

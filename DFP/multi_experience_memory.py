@@ -6,7 +6,9 @@ from __future__ import print_function
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import matplotlib
 from matplotlib import gridspec
+matplotlib.use('Agg')
 import time
 import os
 from . import util as my_util
@@ -351,7 +353,7 @@ class MultiExperienceMemory:
                 print('Rewards:', self._rewards[curr_index])
                 print('Action:', self._actions[curr_index])
                 print('Terminal:', self._terminals[curr_index])
-                inp = input()
+                inp = raw_input()
                 
             curr_index = (curr_index + 1) % self.capacity
             if curr_index == end_index:

@@ -110,7 +110,7 @@ def main(main_args):
 	experiment_args['test_objective_coeffs_temporal'] = np.array([0., 0., 0., 0.5, 0.5, 1.])
 	experiment_args['test_objective_coeffs_meas'] = np.array([0.5,0.5,1.])
 	experiment_args['test_random_prob'] = 0.
-	experiment_args['test_checkpoint'] = 'checkpoints/2017_04_09_09_10_58'
+	experiment_args['test_checkpoint'] = 'checkpoints/2017_11_25_00_00_57'
 	experiment_args['test_policy_num_steps'] = 2000
 	experiment_args['show_predictions'] = False
 	experiment_args['multiplayer'] = False
