@@ -23,7 +23,7 @@ class FuturePredictorAgentAdvantage(Agent):
         self.fc_val_params['out_dims'][-1] = self.target_dim
         self.fc_adv_params = np.copy(self.fc_joint_params)
         self.fc_adv_params['out_dims'][-1] = len(self.net_discrete_actions) * self.target_dim
-        p_img_conv = my_ops.conv_encoder(input_images, self.conv_params, 'p_img_conv', msra_coeff=0.9)
+        p_img_conv = my_ops.rpn_conv_encoder(input_images, self.conv_params, 'p_img_conv', msra_coeff=0.9)
         self.conv_out = p_img_conv
         p_img_fc = my_ops.fc_net(my_ops.flatten(p_img_conv), self.fc_img_params, 'p_img_fc', msra_coeff=0.9)
         p_meas_fc = my_ops.fc_net(input_measurements, self.fc_meas_params, 'p_meas_fc', msra_coeff=0.9)
@@ -87,9 +87,11 @@ class FuturePredictorAgentAdvantage(Agent):
                                                               self.input_measurements: state_meas,
                                                               self.input_objective_coeffs: curr_objective_coeffs})
         #print(conv_out.shape)
-        #if self.iter_id == 1:
-        #    plt.imshow(conv_out[0, :, :, :3])
-        #    plt.show()
+        #if self.iter_id > 0 and self.iter_id <10:
+        #    for i in range(conv_out.shape[0]):
+        #        plt.imshow(conv_out[i, :, :, 4])
+        #        plt.savefig('conv_out/fig{}_{}.png'.format(self.iter_id, i))
+        #        break
         self.iter_id += 1
         self.curr_predictions = predictions[:,:,self.objective_indices]*curr_objective_coeffs[:,None,:]
         self.curr_objectives = np.sum(self.curr_predictions, axis=2)

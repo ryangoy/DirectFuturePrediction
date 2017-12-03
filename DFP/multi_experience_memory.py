@@ -312,8 +312,11 @@ class MultiExperienceMemory:
                 
         while True:
             curr_img = np.transpose(self._images[curr_index], (1,2,0))
+            
             if curr_img.shape[2] == 1:
                 curr_img = np.tile(curr_img, (1,1,3))
+            #plt.imshow(curr_img)
+            #plt.savefig('frames/frame_{}.png'.format(curr_index))
             if show_predictions:
                 preds = self._predictions[curr_index]
                 objs = np.sum(preds, axis=1)
