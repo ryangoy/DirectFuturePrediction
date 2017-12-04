@@ -1,3 +1,8 @@
+# CS 294-112 Final Project Code Base: Region-based Deep RL
+
+I modified this fork to use a more structured input network. I replaced the classic CNN with a network that supports extracting and using information at different scales. The report will be uploaded soon.
+
+
 # Code for the paper "Learning to Act by Predicting the Future" by Alexey Dosovitskiy and Vladlen Koltun
 
 If you use this code or the provided environments in your research, please cite the following paper:
