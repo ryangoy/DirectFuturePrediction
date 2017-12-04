@@ -85,13 +85,14 @@ def rpn_conv_encoder(data, params, name, msra_coeff=1):
         resized_img = tf.image.resize_images(hooks[i], resize_shape, method=tf.image.ResizeMethod.NEAREST_NEIGHBOR)
         resized_imgs.append(resized_img)
 
+    # Flattened
+    """
     flattened = []
     for hook in resized_imgs:
         flattened.append(tf.layers.flatten(hook))
     output = tf.concat(flattened, axis=-1)
-
-    # Dense connections
     """
+    # Dense connections
     prev_layers = []
     curr_layer = None
     for d in range(len(resized_imgs)):
@@ -104,7 +105,6 @@ def rpn_conv_encoder(data, params, name, msra_coeff=1):
         prev_layers.append(curr_layer)
 
     output = prev_layers[-1]
-    """
 
     # NMS
     # concatted = tf.concat(resized_imgs, axis=-1)

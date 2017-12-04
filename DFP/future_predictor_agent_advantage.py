@@ -86,13 +86,16 @@ class FuturePredictorAgentAdvantage(Agent):
         predictions, conv_out = self.sess.run([self.pred_all, self.conv_out], feed_dict={self.input_images: state_imgs, 
                                                               self.input_measurements: state_meas,
                                                               self.input_objective_coeffs: curr_objective_coeffs})
-        #print(conv_out.shape)
-        #if self.iter_id > 0 and self.iter_id <10:
-        #    for i in range(conv_out.shape[0]):
-        #        plt.imshow(conv_out[i, :, :, 4])
-        #        plt.savefig('conv_out/fig{}_{}.png'.format(self.iter_id, i))
-        #        break
+        
+        # For visualizing convs during test time
+        """
+        if self.iter_id > 0 and self.iter_id <10:
+            for i in range(conv_out.shape[0]):
+                plt.imshow(conv_out[i, :, :, 3])
+                plt.savefig('conv_out/fig{}_{}.png'.format(self.iter_id, i))
+                break
         self.iter_id += 1
+        """ 
         self.curr_predictions = predictions[:,:,self.objective_indices]*curr_objective_coeffs[:,None,:]
         self.curr_objectives = np.sum(self.curr_predictions, axis=2)
         
